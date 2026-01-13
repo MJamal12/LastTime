@@ -27,6 +27,16 @@ struct LogRowView: View {
                         .foregroundStyle(.primary)
                         .lineLimit(1)
                     
+                    if let reminderDate = logItem.reminderDate {
+                        HStack(spacing: 6) {
+                            Image(systemName: isOverdue ? "bell.badge.fill" : "bell.fill")
+                                .font(.caption2)
+                            Text("Due: \(TimeFormatter.completionDateString(from: reminderDate))")
+                                .font(.system(.caption, design: .rounded, weight: .medium))
+                        }
+                        .foregroundStyle(isOverdue ? .orange : .blue)
+                    }
+                    
                     HStack(spacing: 6) {
                         Image(systemName: "clock")
                             .font(.caption2)
@@ -34,16 +44,6 @@ struct LogRowView: View {
                             .font(.system(.subheadline, design: .rounded))
                     }
                     .foregroundStyle(isOverdue ? .orange : .secondary)
-                    
-                    if isOverdue && logItem.lastCompletedAt == nil, let reminderDate = logItem.reminderDate {
-                        HStack(spacing: 6) {
-                            Image(systemName: "calendar.badge.exclamationmark")
-                                .font(.caption2)
-                            Text("Due: \(TimeFormatter.completionDateString(from: reminderDate))")
-                                .font(.system(.caption, design: .rounded))
-                        }
-                        .foregroundStyle(.orange)
-                    }
                     
                     if let lastCompleted = logItem.lastCompletedAt {
                         HStack(spacing: 6) {
